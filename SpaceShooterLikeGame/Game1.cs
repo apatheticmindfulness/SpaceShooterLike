@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceShooterLikeGame.Source;
 
 namespace SpaceShooterLikeGame
 {
@@ -15,6 +16,9 @@ namespace SpaceShooterLikeGame
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = GameConfig.Window.Width;
+            graphics.PreferredBackBufferHeight = GameConfig.Window.Height;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -73,7 +77,7 @@ namespace SpaceShooterLikeGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(GameConfig.Window.BackgroundColor);
 
             // TODO: Add your drawing code here
 
