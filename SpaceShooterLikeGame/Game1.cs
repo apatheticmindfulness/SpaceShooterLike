@@ -13,6 +13,9 @@ namespace SpaceShooterLikeGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private Texture2D m_Texture;
+        private Spaceship m_Spaceship;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,6 +48,8 @@ namespace SpaceShooterLikeGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            m_Texture = Content.Load<Texture2D>("Resources/Assets/Sprite");
+            m_Spaceship = new Spaceship(graphics.GraphicsDevice, m_Texture, new Vector2((float)GameConfig.Window.Width / 2.0f, (float)GameConfig.Window.Height / 2.0f), 0);
         }
 
         /// <summary>
@@ -67,6 +72,7 @@ namespace SpaceShooterLikeGame
                 Exit();
 
             // TODO: Add your update logic here
+            m_Spaceship.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -80,6 +86,9 @@ namespace SpaceShooterLikeGame
             GraphicsDevice.Clear(GameConfig.Window.BackgroundColor);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            m_Spaceship.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
