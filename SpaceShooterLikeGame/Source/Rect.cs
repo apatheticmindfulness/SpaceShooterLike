@@ -67,5 +67,11 @@ namespace SpaceShooterLikeGame.Source
         {
             position = position_bind;
         }
+
+        public bool CollideWith(ref Rect other)
+        {
+            return right > other.left && left < other.right &&
+                top < other.bottom && bottom > other.top;
+        }
     }
 }

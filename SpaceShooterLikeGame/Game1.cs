@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceShooterLikeGame.Source;
+using System;
 
 namespace SpaceShooterLikeGame
 {
@@ -15,6 +16,8 @@ namespace SpaceShooterLikeGame
 
         private Texture2D m_Texture;
         private Spaceship m_Spaceship;
+        private Meteoroid[] m_Meteoroid = new Meteoroid[20];
+        private Random m_Random;
 
         public Game1()
         {
@@ -34,7 +37,7 @@ namespace SpaceShooterLikeGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            m_Random = new Random();
             base.Initialize();
         }
 
@@ -50,6 +53,18 @@ namespace SpaceShooterLikeGame
             // TODO: use this.Content to load your game content here
             m_Texture = Content.Load<Texture2D>("Resources/Assets/Sprite");
             m_Spaceship = new Spaceship(graphics.GraphicsDevice, m_Texture, new Vector2((float)GameConfig.Window.Width / 2.0f, (float)GameConfig.Window.Height / 2.0f), 0);
+
+            for (int i = 0; i < m_Meteoroid.Length; i++)
+            {
+                Vector2 random_position = new Vector2(
+                    m_Random.Next(GameConfig.Window.Width + 75, GameConfig.Window.Width + 75 * 7),
+                    m_Random.Next(75 * 5, GameConfig.Window.Height - 75)
+                );
+                float speed = (float)m_Random.Next(3, 5);
+
+                m_Meteoroid[i] = new Meteoroid();
+                m_Meteoroid[i].Init(graphics.GraphicsDevice, m_Texture, random_position, speed * 60.0f, 1, ref m_Random);
+            };
         }
 
         /// <summary>
@@ -74,6 +89,16 @@ namespace SpaceShooterLikeGame
             // TODO: Add your update logic here
             m_Spaceship.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
+            for(int i = 0; i < m_Meteoroid.Length; i++)
+            {
+                m_Meteoroid[i].Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+                if (m_Spaceship.CollideWithMeteor(m_Meteoroid[i].GetRect()))
+                {
+                    // Player dead
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -87,7 +112,13 @@ namespace SpaceShooterLikeGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             m_Spaceship.Draw(spriteBatch);
+            for (int i = 0; i < m_Meteoroid.Length; i++)
+            { 
+                m_Meteoroid[i].Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

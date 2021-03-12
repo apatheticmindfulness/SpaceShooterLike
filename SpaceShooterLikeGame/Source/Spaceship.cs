@@ -18,7 +18,6 @@ namespace SpaceShooterLikeGame.Source
         private Vector2 direction;
 
         Rect m_CollBox;
-        private Vector2 m_CollisionPosition;
 
         public Spaceship(GraphicsDevice graphicsDevice, Texture2D new_texture, Vector2 new_position, int texture_index)
         {
@@ -28,7 +27,7 @@ namespace SpaceShooterLikeGame.Source
             m_Origin = new Vector2(m_Width / 2.0f, m_Height / 2.0f);
 
             m_CollBox = new Rect(graphicsDevice, (int)m_Width, (int)m_Height - 40, m_Origin, Color.White);
-            m_CollBox.position = m_CollisionPosition;
+            m_CollBox.position = position + new Vector2(0.0f, 15.0f);
         }
 
         public void KeyboardInput(float dt)
@@ -55,6 +54,28 @@ namespace SpaceShooterLikeGame.Source
             }
         }
 
+        public override void Update(float dt = 0)
+        {
+            m_CollBox.ConfigureSide(position);
+            KeyboardInput(dt);
+            m_CollBox.BindPosition(position + new Vector2(0.0f, 15.0f));
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            //m_CollBox.Draw(spriteBatch);
+            spriteBatch.Draw(
+                texture,
+                position,
+                rectangle,
+                Color.White,
+                0.0f,
+                m_Origin,
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
+        }
+
         public void CollideWithWindow()
         {
             if (m_CollBox.left < 0)
@@ -76,28 +97,9 @@ namespace SpaceShooterLikeGame.Source
             }
         }
 
-        public override void Update(float dt = 0)
+        public bool CollideWithMeteor(Rect meteor)
         {
-            m_CollBox.ConfigureSide(position);
-            KeyboardInput(dt);
-            m_CollBox.BindPosition(position + new Vector2(0.0f, 15.0f));
-
-            base.Update(dt);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            m_CollBox.Draw(spriteBatch);
-            spriteBatch.Draw(
-                texture,
-                position,
-                rectangle,
-                Color.White,
-                0.0f,
-                m_Origin,
-                1.0f,
-                SpriteEffects.None,
-                0.0f);
+            return m_CollBox.CollideWith(ref meteor);
         }
     }
 }
