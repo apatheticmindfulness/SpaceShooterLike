@@ -84,5 +84,10 @@ namespace SpaceShooterLikeGame.Source
         {
             return m_CollBox;
         }
+
+        public bool CollideWithProjectile(Rect projectile)
+        {
+            return m_CollBox.CollideWith(ref projectile);
+        }
     }
 }

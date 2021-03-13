@@ -47,6 +47,7 @@
     <Compile Include="Source\Entity.cs" />
     <Compile Include="Source\GameConfig.cs" />
     <Compile Include="Source\Meteoroid.cs" />
+    <Compile Include="Source\Projectile.cs" />
     <Compile Include="Source\Rect.cs" />
     <Compile Include="Source\Spaceship.cs" />
   </ItemGroup>

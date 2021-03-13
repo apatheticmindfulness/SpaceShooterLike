@@ -65,6 +65,7 @@ namespace SpaceShooterLikeGame
                 m_Meteoroid[i] = new Meteoroid();
                 m_Meteoroid[i].Init(graphics.GraphicsDevice, m_Texture, random_position, speed * 60.0f, 1, ref m_Random);
             };
+
         }
 
         /// <summary>
@@ -87,15 +88,23 @@ namespace SpaceShooterLikeGame
                 Exit();
 
             // TODO: Add your update logic here
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             m_Spaceship.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            for(int i = 0; i < m_Meteoroid.Length; i++)
+            for (int i = 0; i < m_Meteoroid.Length; i++)
             {
                 m_Meteoroid[i].Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
                 if (m_Spaceship.CollideWithMeteor(m_Meteoroid[i].GetRect()))
                 {
                     // Player dead
+                }
+
+
+                if(m_Spaceship.ProjectileHitMeteor(m_Meteoroid[i]))
+                {
+                    // Terserah 
                 }
             }
 
@@ -115,7 +124,7 @@ namespace SpaceShooterLikeGame
 
             m_Spaceship.Draw(spriteBatch);
             for (int i = 0; i < m_Meteoroid.Length; i++)
-            { 
+            {
                 m_Meteoroid[i].Draw(spriteBatch);
             }
 

@@ -11,16 +11,21 @@ namespace SpaceShooterLikeGame.Source
 {
     public class Spaceship : Entity
     {
+        private GraphicsDevice m_GraphicsDevice;
         private float m_Width = 75.0f;
         private float m_Height = 75.0f;
         private float m_Speed = 5.0f * 60.0f;
         private Vector2 m_Origin;
-        private Vector2 direction;
+        private List<Projectile> m_Projectiles;
+
+        private int m_ShootCounter = 0;
+        private int m_ShootDuration = 7;
 
         Rect m_CollBox;
 
         public Spaceship(GraphicsDevice graphicsDevice, Texture2D new_texture, Vector2 new_position, int texture_index)
         {
+            m_GraphicsDevice = graphicsDevice;
             texture = new_texture;
             position = new_position;
             rectangle = new Rectangle(texture_index * (int)m_Width, 1, (int)m_Width, (int)m_Height);
@@ -28,6 +33,8 @@ namespace SpaceShooterLikeGame.Source
 
             m_CollBox = new Rect(graphicsDevice, (int)m_Width, (int)m_Height - 40, m_Origin, Color.White);
             m_CollBox.position = position + new Vector2(0.0f, 15.0f);
+
+            m_Projectiles = new List<Projectile>();
         }
 
         public void KeyboardInput(float dt)
@@ -52,12 +59,41 @@ namespace SpaceShooterLikeGame.Source
             {
                 position += new Vector2(0.0f, 1.0f) * m_Speed * dt;
             }
+
+            // Shoot projectile
+            m_ShootCounter++;
+            if(Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                if (m_ShootCounter > m_ShootDuration)
+                {
+                    Projectile projectile = new Projectile(
+                        m_GraphicsDevice,
+                        texture,
+                        new Vector2(position.X + 25.0f, position.Y),
+                        2);
+                    m_Projectiles.Add(projectile);
+                    m_ShootCounter = 0;
+                }
+            }
         }
 
         public override void Update(float dt = 0)
         {
             m_CollBox.ConfigureSide(position);
+
             KeyboardInput(dt);
+            for(int i = 0; i < m_Projectiles.Count; i++)
+            {
+                if(m_Projectiles[i].IsActive())
+                {
+                    m_Projectiles[i].Update(dt);
+                }
+                else
+                {
+                    m_Projectiles.RemoveAt(i);
+                }
+            }
+
             m_CollBox.BindPosition(position + new Vector2(0.0f, 15.0f));
         }
 
@@ -74,6 +110,14 @@ namespace SpaceShooterLikeGame.Source
                 1.0f,
                 SpriteEffects.None,
                 0.0f);
+
+            for (int i = 0; i < m_Projectiles.Count; i++)
+            {
+                if (m_Projectiles[i].IsActive())
+                {
+                    m_Projectiles[i].Draw(spriteBatch);
+                }
+            }
         }
 
         public void CollideWithWindow()
@@ -101,5 +145,26 @@ namespace SpaceShooterLikeGame.Source
         {
             return m_CollBox.CollideWith(ref meteor);
         }
+
+        public bool ProjectileHitMeteor(Meteoroid meteoroids)
+        {
+            for(int i = 0; i < m_Projectiles.Count; i++)
+            {
+                if(meteoroids.CollideWithProjectile(m_Projectiles[i].GetRect()))
+                {
+                    // Increase point
+
+                    // Destroy projectile
+                    m_Projectiles.RemoveAt(i);
+
+                    // Destroy meteor
+                    meteoroids.Reset();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }
