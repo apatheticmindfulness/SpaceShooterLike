@@ -37,16 +37,6 @@ namespace SpaceShooterLikeGame.Source
             m_IsActive = true;
         }
 
-        public void Reset()
-        {
-            Vector2 random_position = new Vector2(
-               m_Random.Next(GameConfig.Window.Width + (int)m_Width, GameConfig.Window.Width + (int)m_Width * 7),
-               m_Random.Next(75, GameConfig.Window.Height - 75)
-            );
-            float speed = (float)m_Random.Next(3, 5);
-
-            Init(m_GraphicsDevice, texture, random_position, speed * 60.0f, 1, ref m_Random);
-        }
 
         public override void Update(float dt = 0)
         {
@@ -80,6 +70,17 @@ namespace SpaceShooterLikeGame.Source
             }
         }
 
+        public void Reset()
+        {
+            Vector2 random_position = new Vector2(
+               m_Random.Next(GameConfig.Window.Width + (int)m_Width, GameConfig.Window.Width + (int)m_Width * 7),
+               m_Random.Next(75, GameConfig.Window.Height - 75)
+            );
+            float speed = (float)m_Random.Next(3, 5);
+
+            Init(m_GraphicsDevice, texture, random_position, speed * 60.0f, 1, ref m_Random);
+        }
+
         public Rect GetRect()
         {
             return m_CollBox;
@@ -87,7 +88,7 @@ namespace SpaceShooterLikeGame.Source
 
         public bool CollideWithProjectile(Rect projectile)
         {
-            return m_CollBox.CollideWith(ref projectile);
+            return m_CollBox.CollideWith(projectile);
         }
     }
 }

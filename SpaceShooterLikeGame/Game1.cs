@@ -17,6 +17,7 @@ namespace SpaceShooterLikeGame
         private Texture2D m_Texture;
         private Spaceship m_Spaceship;
         private Meteoroid[] m_Meteoroid = new Meteoroid[20];
+        private Goal m_Goal;
         private Random m_Random;
 
         public Game1()
@@ -38,6 +39,10 @@ namespace SpaceShooterLikeGame
         {
             // TODO: Add your initialization logic here
             m_Random = new Random();
+
+            m_Goal = new Goal();
+            m_Goal.Init(graphics.GraphicsDevice, new Vector2((float)GameConfig.Window.Width / 2.0f, 100.0f), Color.Blue, ref m_Random);
+
             base.Initialize();
         }
 
@@ -92,6 +97,7 @@ namespace SpaceShooterLikeGame
 
             m_Spaceship.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
+            // Meteoroids
             for (int i = 0; i < m_Meteoroid.Length; i++)
             {
                 m_Meteoroid[i].Update((float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -106,6 +112,14 @@ namespace SpaceShooterLikeGame
                 {
                     // Terserah 
                 }
+            }
+
+            // Goal
+            m_Goal.Update(dt);
+            if (m_Spaceship.CollideWithGoal(m_Goal))
+            {
+                // Tambah poin
+                m_Goal.Reset();
             }
 
             base.Update(gameTime);
@@ -127,6 +141,8 @@ namespace SpaceShooterLikeGame
             {
                 m_Meteoroid[i].Draw(spriteBatch);
             }
+
+            m_Goal.Draw(spriteBatch);
 
             spriteBatch.End();
 

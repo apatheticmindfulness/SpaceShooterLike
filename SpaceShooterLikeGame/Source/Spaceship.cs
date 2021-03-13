@@ -120,6 +120,11 @@ namespace SpaceShooterLikeGame.Source
             }
         }
 
+        public Rect GetRect()
+        {
+            return m_CollBox;
+        }
+
         public void CollideWithWindow()
         {
             if (m_CollBox.left < 0)
@@ -143,7 +148,7 @@ namespace SpaceShooterLikeGame.Source
 
         public bool CollideWithMeteor(Rect meteor)
         {
-            return m_CollBox.CollideWith(ref meteor);
+            return m_CollBox.CollideWith(meteor);
         }
 
         public bool ProjectileHitMeteor(Meteoroid meteoroids)
@@ -166,5 +171,9 @@ namespace SpaceShooterLikeGame.Source
             return false;
         }
 
+        public bool CollideWithGoal(Goal goal)
+        {
+            return m_CollBox.CollideWith(goal.GetRect());
+        }
     }
 }

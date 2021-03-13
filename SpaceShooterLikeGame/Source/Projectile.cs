@@ -65,7 +65,7 @@ namespace SpaceShooterLikeGame.Source
 
         public bool CollideWithMeteor(Rect meteor)
         {
-            return m_CollBox.CollideWith(ref meteor);
+            return m_CollBox.CollideWith(meteor);
         }
 
     }
