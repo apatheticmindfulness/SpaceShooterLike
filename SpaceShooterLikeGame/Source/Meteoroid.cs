@@ -31,8 +31,8 @@ namespace SpaceShooterLikeGame.Source
             m_Origin = new Vector2(m_Width / 2.0f, m_Height / 2.0f);
 
             // Collision box
-            m_CollBox = new Rect(graphicsDevice, (int)m_Width - 20, (int)m_Height - 20, m_Origin, Color.White);
-            m_CollBox.position = position + new Vector2(10.0f, 10.0f);
+            m_CollBox = new Rect(graphicsDevice, (int)m_Width - 30, (int)m_Height - 30, m_Origin, Color.White);
+            m_CollBox.position = position + new Vector2(15.0f, 15.0f);
 
             m_IsActive = true;
         }
@@ -48,12 +48,12 @@ namespace SpaceShooterLikeGame.Source
                 Reset();
             }
 
-            m_CollBox.BindPosition(position + new Vector2(10.0f, 10.0f));
+            m_CollBox.BindPosition(position + new Vector2(15.0f, 15.0f));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-           // m_CollBox.Draw(spriteBatch);
+            //m_CollBox.Draw(spriteBatch);
 
             if (m_IsActive)
             {
