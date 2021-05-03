@@ -37,7 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:Resources/Assets/Sprite.png
 
-#begin Resources/Assets/Start.png
+#begin Resources/Assets/StartScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,5 +47,12 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Resources/Assets/Start.png
+/build:Resources/Assets/StartScreen.png
+
+#begin Resources/Fonts/GameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Resources/Fonts/GameFont.spritefont
 

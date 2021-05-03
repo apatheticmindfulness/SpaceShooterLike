@@ -24,15 +24,15 @@ namespace SpaceShooterLikeGame
 
         private Texture2D m_Texture;
         private Spaceship m_Spaceship;
-        private Meteoroid[] m_Meteoroid = new Meteoroid[20];
+        private Meteoroid[] m_Meteoroid = new Meteoroid[25];
         private Goal m_Goal;
-        private int m_Score = 0;
         private Random m_Random;
-
         private Texture2D m_StartScreenTexture;
         private Texture2D m_GameOverTexture;
+        private SpriteFont m_SpriteFont;
 
         private GameState m_GameState;
+        private int m_Score = 0;
 
         public Game1()
         {
@@ -47,15 +47,23 @@ namespace SpaceShooterLikeGame
         {
             m_Random = new Random();
             m_Goal = new Goal();
-            m_Goal.Init(graphics.GraphicsDevice, new Vector2((float)GameConfig.Window.Width / 2.0f, 100.0f), Color.Blue, ref m_Random);
+            m_Score = 0;
+
+            Vector2 goal_random_position = new Vector2(
+                m_Random.Next(GameConfig.Window.Width + 25, GameConfig.Window.Width + 25 * 7),
+                m_Random.Next(25, GameConfig.Window.Height - 75)
+            );
+            m_Goal.Init(graphics.GraphicsDevice, goal_random_position, Color.Blue, ref m_Random);
+
+            m_Spaceship = new Spaceship(graphics.GraphicsDevice, m_Texture, new Vector2((float)GameConfig.Window.Width / 2.0f, (float)GameConfig.Window.Height / 2.0f), 0);
 
             for (int i = 0; i < m_Meteoroid.Length; i++)
             {
                 Vector2 random_position = new Vector2(
                     m_Random.Next(GameConfig.Window.Width + 75, GameConfig.Window.Width + 75 * 7),
-                    m_Random.Next(75 * 5, GameConfig.Window.Height - 75)
+                    m_Random.Next(75, GameConfig.Window.Height - 75)
                 );
-                float speed = (float)m_Random.Next(3, 5);
+                float speed = (float)m_Random.Next(1, 10);
 
                 m_Meteoroid[i] = new Meteoroid();
                 m_Meteoroid[i].Init(graphics.GraphicsDevice, m_Texture, random_position, speed * 60.0f, 1, ref m_Random);
@@ -65,15 +73,26 @@ namespace SpaceShooterLikeGame
         private void DrawStartScreen()
         {
             spriteBatch.Draw(
-                    m_StartScreenTexture,
-                    new Vector2(GameConfig.Window.Width / 2.0f, GameConfig.Window.Height / 2.0f),
-                    new Rectangle(0, 0, m_StartScreenTexture.Width, m_StartScreenTexture.Height),
-                    Color.White,
-                    0.0f,
-                    new Vector2(m_StartScreenTexture.Width / 2.0f, m_StartScreenTexture.Height / 2.0f),
-                    1.0f,
-                    SpriteEffects.None,
-                    0.0f);
+                m_StartScreenTexture,
+                new Vector2(GameConfig.Window.Width / 2.0f, GameConfig.Window.Height / 2.0f),
+                new Rectangle(0, 0, m_StartScreenTexture.Width, m_StartScreenTexture.Height),
+                Color.White,
+                0.0f,
+                new Vector2(m_StartScreenTexture.Width / 2.0f, m_StartScreenTexture.Height / 2.0f),
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
+
+            spriteBatch.DrawString(
+                m_SpriteFont,
+                "TEKAN ENTER UNTUK MEMULAI!",
+                new Vector2(GameConfig.Window.Width - m_StartScreenTexture.Width / 1.5f, GameConfig.Window.Height +  10.0f / 2.0f),
+                Color.White,
+                0.0f,
+                new Vector2(m_StartScreenTexture.Width / 2.0f, m_StartScreenTexture.Height / 2.0f),
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
         }
 
         private void DrawGameOverScreen()
@@ -82,6 +101,17 @@ namespace SpaceShooterLikeGame
                 m_GameOverTexture,
                 new Vector2(GameConfig.Window.Width / 2.0f, GameConfig.Window.Height / 2.0f),
                 new Rectangle(0, 0, m_GameOverTexture.Width, m_GameOverTexture.Height),
+                Color.White,
+                0.0f,
+                new Vector2(m_GameOverTexture.Width / 2.0f, m_GameOverTexture.Height / 2.0f),
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
+
+            spriteBatch.DrawString(
+                m_SpriteFont,
+                "TEKAN ENTER UNTUK MEMULAI KEMBALI",
+                new Vector2(GameConfig.Window.Width - m_GameOverTexture.Width / 1.3f, GameConfig.Window.Height + 10.0f / 2.0f),
                 Color.White,
                 0.0f,
                 new Vector2(m_GameOverTexture.Width / 2.0f, m_GameOverTexture.Height / 2.0f),
@@ -119,8 +149,9 @@ namespace SpaceShooterLikeGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            m_StartScreenTexture = Content.Load<Texture2D>("Resources/Assets/Start");
+            m_StartScreenTexture = Content.Load<Texture2D>("Resources/Assets/StartScreen");
             m_GameOverTexture = Content.Load<Texture2D>("Resources/Assets/GameOver");
+            m_SpriteFont = Content.Load<SpriteFont>("Resources/Fonts/GameFont");
 
             m_Texture = Content.Load<Texture2D>("Resources/Assets/Sprite");
             m_Spaceship = new Spaceship(graphics.GraphicsDevice, m_Texture, new Vector2((float)GameConfig.Window.Width / 2.0f, (float)GameConfig.Window.Height / 2.0f), 0);
@@ -129,14 +160,15 @@ namespace SpaceShooterLikeGame
             {
                 Vector2 random_position = new Vector2(
                     m_Random.Next(GameConfig.Window.Width + 75, GameConfig.Window.Width + 75 * 7),
-                    m_Random.Next(75 * 5, GameConfig.Window.Height - 75)
+                    m_Random.Next(75, GameConfig.Window.Height - 75)
                 );
-                float speed = (float)m_Random.Next(3, 5);
+                float speed = (float)m_Random.Next(3, 74);
 
                 m_Meteoroid[i] = new Meteoroid();
                 m_Meteoroid[i].Init(graphics.GraphicsDevice, m_Texture, random_position, speed * 60.0f, 1, ref m_Random);
             };
 
+            base.LoadContent();
         }
 
         /// <summary>
@@ -146,6 +178,7 @@ namespace SpaceShooterLikeGame
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            Content.Unload();
         }
 
         /// <summary>
@@ -197,6 +230,7 @@ namespace SpaceShooterLikeGame
                 if (m_Spaceship.CollideWithGoal(m_Goal))
                 {
                     // Tambah poin
+                    m_Score += 5;
                     m_Goal.Reset();
                 }
             }
@@ -228,6 +262,8 @@ namespace SpaceShooterLikeGame
                 }
 
                 m_Goal.Draw(spriteBatch);
+
+                spriteBatch.DrawString(m_SpriteFont, "Score: " + m_Score.ToString(), new Vector2(10.0f, 10.0f), Color.White);
             }
 
             if (m_GameState == GameState.GAME_OVER)

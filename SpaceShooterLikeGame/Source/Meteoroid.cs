@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace SpaceShooterLikeGame.Source
 {
@@ -54,7 +50,6 @@ namespace SpaceShooterLikeGame.Source
         public override void Draw(SpriteBatch spriteBatch)
         {
             //m_CollBox.Draw(spriteBatch);
-
             if (m_IsActive)
             {
                 spriteBatch.Draw(
@@ -76,7 +71,7 @@ namespace SpaceShooterLikeGame.Source
                m_Random.Next(GameConfig.Window.Width + (int)m_Width, GameConfig.Window.Width + (int)m_Width * 7),
                m_Random.Next(75, GameConfig.Window.Height - 75)
             );
-            float speed = (float)m_Random.Next(3, 5);
+            float speed = (float)m_Random.Next(1, 10);
 
             Init(m_GraphicsDevice, texture, random_position, speed * 60.0f, 1, ref m_Random);
         }

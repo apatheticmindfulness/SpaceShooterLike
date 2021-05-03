@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace SpaceShooterLikeGame.Source
 {
@@ -21,7 +17,7 @@ namespace SpaceShooterLikeGame.Source
         private int m_ShootCounter = 0;
         private int m_ShootDuration = 7;
 
-        Rect m_CollBox;
+        private Rect m_CollBox;
 
         public Spaceship(GraphicsDevice graphicsDevice, Texture2D new_texture, Vector2 new_position, int texture_index)
         {
@@ -31,8 +27,8 @@ namespace SpaceShooterLikeGame.Source
             rectangle = new Rectangle(texture_index * (int)m_Width, 1, (int)m_Width, (int)m_Height);
             m_Origin = new Vector2(m_Width / 2.0f, m_Height / 2.0f);
 
-            m_CollBox = new Rect(graphicsDevice, (int)m_Width, (int)m_Height - 40, m_Origin, Color.White);
-            m_CollBox.position = position + new Vector2(0.0f, 15.0f);
+            m_CollBox = new Rect(graphicsDevice, (int)m_Width - 10, (int)m_Height - 45, m_Origin, Color.White);
+            m_CollBox.position = position + new Vector2(5.0f, 17.0f);
 
             m_Projectiles = new List<Projectile>();
         }
@@ -94,7 +90,7 @@ namespace SpaceShooterLikeGame.Source
                 }
             }
 
-            m_CollBox.BindPosition(position + new Vector2(0.0f, 15.0f));
+            m_CollBox.BindPosition(position + new Vector2(5.0f, 17.0f));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

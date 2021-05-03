@@ -1,13 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceShooterLikeGame.Source
 {
+    // Rizky Maulana
+    // :)
+    // 
     public class Rect
     {
         public float width { set; get; }
@@ -28,8 +26,8 @@ namespace SpaceShooterLikeGame.Source
             height = new_height;
             origin = new_origin;
 
-            left = position.X - width / 2.0f;
-            right = position.X + width / 2.0f;
+            //left = position.X - width / 2.0f;
+            //right = position.X + width / 2.0f;
 
             Color[] color = new Color[new_width * new_height];
             for (int i = 0; i < color.Length; i++)
